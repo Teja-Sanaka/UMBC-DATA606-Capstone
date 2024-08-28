@@ -2,7 +2,7 @@
 
 ![Teja's Headshot](headshot.jpg)
 
-**Email:** tejasanaka16@gmail.com  
+**Email:** tejasanaka16@gmail.com 
 **Phone:** +1 (667) 369-8928  
 **LinkedIn:** [LinkedIn Profile](#)  
 **GitHub:** [GitHub Profile](#)  
