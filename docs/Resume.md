@@ -11,7 +11,7 @@
 
 ## Summary
 
-Aspiring Data Science professional looking to work as an intern for a forward-thinking company where my skills and abilities can be leveraged for mutual growth and success.
+Aspiring Data Science professional looking to work for a forward-thinking company where my skills and abilities can be leveraged for mutual growth and success.
 
 ---
 
@@ -21,7 +21,7 @@ Aspiring Data Science professional looking to work as an intern for a forward-th
 **University of Maryland, Baltimore County**  
 *Baltimore, MD*  
 January 2023 – Present  
-**GPA:** 4.0  
+**GPA:** 3.856  
 **Relevant Coursework:** Data Management using SQLite, Machine Learning, Big Data Processing, Management Leadership, and Communications.
 
 ### Bachelor of Technology in Computer Science  
