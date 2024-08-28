@@ -1,6 +1,6 @@
 # Teja Sanaka
 
-![Teja's Headshot](headshot.jpg)
+<img src="headshot.jpg" alt="Headshot Photo" width="200"/>
 
 **Email:** tejasanaka16@gmail.com 
 **Phone:** +1 (667) 369-8928  
