@@ -5,7 +5,7 @@
 **Email:** tejasanaka16@gmail.com 
 **Phone:** +1 (667) 369-8928  
 **LinkedIn:** [https://www.linkedin.com/in/teja-sanaka-6598771ba/](#)  
-**GitHub:** [GitHub Profile](#)  
+**GitHub:** [https://github.com/Teja-Sanaka](#)  
 
 ---
 
