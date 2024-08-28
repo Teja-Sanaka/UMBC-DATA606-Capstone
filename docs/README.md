@@ -1,6 +1,6 @@
 # Teja Sanaka
 
-![Divya Sri Nunety's Headshot](headshot.jpg)
+![Teja's Headshot](headshot.jpg)
 
 **Email:** tejasanaka16@gmail.com  
 **Phone:** +1 (667) 369-8928  
