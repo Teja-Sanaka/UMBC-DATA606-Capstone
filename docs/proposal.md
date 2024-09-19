@@ -51,7 +51,7 @@ The datasets used in this project focus on exercise data and calorie expenditure
   - **exercise.csv**: 15000 rows and 8 columns
   - **calories.csv**: 15000 rows and 2 columns
 
-- **Time Period**: The datasets do not include explicit time-bound data (no clear time periods provided from file names). If time data is available, further analysis may be needed.
+- **Time Period**: The datasets do not include explicit time-bound data.
 
 - **Each Row Represents**: 
   - Each row likely represents a single exercise session or activity, performed by an individual participant, with details such as exercise duration, participant characteristics, and the corresponding calories burned.
@@ -112,5 +112,5 @@ In this project, the target variable will be **Calories** from the "calories.csv
 - **Heart_Rate**
 - **Body_Temp**.
 
-These features will be used to predict the number of calories burned for each exercise session.
+These features will predict the number of calories burned for each exercise session.
 ```
