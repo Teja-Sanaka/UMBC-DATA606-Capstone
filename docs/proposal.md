@@ -66,8 +66,7 @@ The table below outlines the columns, data types, definitions, and potential val
 | **Weight (kg)**        | Numerical      | The weight of the participant in kilograms          | Numeric values (e.g., 70, 85, etc.) |
 | **Height (cm)**        | Numerical      | The height of the participant in centimeters        | Numeric values                      |
 | **Gender**            | Categorical    | Gender of the participant                           | Male, Female                        |
-| **Exercise Type**     | Categorical    | Type of exercise performed                          | Walking, Running, Cycling, etc.     |
-| **Calories Burned**   | Numerical      | The number of calories burned during the exercise   | Numeric values (target variable)    |
+| **Calories Burned**   | Numerical      | The number of calories burned after the exercise   | Numeric values (target variable)    |
 
 **Target/Label**:
 - **Target Variable**: The target variable in the machine learning model will be **"Calories Burned"**. This is the output the model will predict based on the input features.
@@ -79,7 +78,6 @@ The table below outlines the columns, data types, definitions, and potential val
   - **Weight (kg)**
   - **Height (cm)**
   - **Gender**
-  - **Exercise Type**
 
 These features will help the model learn the relationship between exercise activities and the number of calories burned.
 
@@ -100,8 +98,8 @@ These features will help the model learn the relationship between exercise activ
     - **Height**: Height of the participant in centimeters (numerical)
     - **Weight**: Weight of the participant in kilograms (numerical)
     - **Duration**: Duration of the exercise session in minutes (numerical)
-    - **Heart_Rate**: Participant's heart rate during the exercise (numerical)
-    - **Body_Temp**: Participant's body temperature during the exercise (numerical)
+    - **Heart_Rate**: Participant's heart rate after the exercise (numerical)
+    - **Body_Temp**: Participant's body temperature after the exercise (numerical)
 
 In this project, the target variable will be **Calories** from the "calories.csv" file, and potential features for the machine learning model will include:
 - **Gender**
