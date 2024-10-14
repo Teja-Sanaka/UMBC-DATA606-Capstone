@@ -48,7 +48,7 @@ A histogram or distribution plot helps visualize the distribution of the target 
   sns.histplot(calories_df['Calories'], kde=True)
 ### b. **Correlation Matrix**:
 - A heatmap of correlations between variables helps identify which features are most strongly related to the target variable (`Calories`). Features with high correlation, such as `Duration` and `Heart_Rate`, are expected to play a significant role in prediction.
-
+<img src="Correlation Matrix.png" />
 ## 5. Linear Regression
 
 ### a. **Model Description**:
