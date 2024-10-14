@@ -52,7 +52,7 @@ A histogram or distribution plot helps visualize the distribution of the target 
 
 ### c. **Box Plot of Calories Burnt by Gender**:
 - This box plot compares the distribution of calories burnt for males and females. It helps determine if there’s a significant difference in calorie expenditure between genders.
-  
+<img src="Boxplot of Numerical Features" />  
 ## 5. Linear Regression
 
 ### a. **Model Description**:
