@@ -46,3 +46,42 @@ A histogram or distribution plot helps visualize the distribution of the target 
   ```python
   import seaborn as sns
   sns.histplot(calories_df['Calories'], kde=True)
+  ### b. **Correlation Matrix**:
+- A heatmap of correlations between variables helps identify which features are most strongly related to the target variable (`Calories`). Features with high correlation, such as `Duration` and `Heart_Rate`, are expected to play a significant role in prediction.
+
+## 5. Linear Regression
+
+### a. **Model Description**:
+Linear regression is used to model the relationship between one or more independent variables (features) and the dependent variable (calories burnt). It assumes a linear relationship and aims to predict the target variable as a weighted sum of the input features.
+
+The general equation for linear regression is:
+
+\[
+Calories = \beta_0 + \beta_1 \cdot Duration + \beta_2 \cdot Heart\_Rate + \beta_3 \cdot Body\_Temp + \dots + \epsilon
+\]
+
+Where:
+- \(\beta_0\) is the intercept.
+- \(\beta_1, \beta_2, \dots\) are the coefficients (weights) for the features.
+- \(\epsilon\) is the error term (residual).
+
+### b. **Steps in Model Development**:
+1. **Data Splitting**:
+   - The dataset is split into training and testing sets, usually in an 80-20 or 70-30 ratio. The training set is used to train the linear regression model, while the testing set evaluates its performance.
+   
+2. **Model Fitting**:
+   - The linear regression model is trained using features like `Duration`, `Heart_Rate`, `Body_Temp`, and other relevant variables from the exercise dataset.
+
+3. **Evaluation Metrics**:
+   - **Mean Absolute Error (MAE)**: Measures the average magnitude of prediction errors.
+   - **Mean Squared Error (MSE)**: Penalizes larger errors by squaring them.
+   - **R-squared (R²)**: Represents the proportion of the variance in calories burnt that is predictable from the features. An R² value close to 1 indicates a good model fit.
+
+### c. **Limitations of Linear Regression**:
+- **Assumes Linearity**: Linear regression assumes a straight-line relationship between features and calories burnt, which may not always hold in real-world scenarios.
+- **Outliers**: Extreme values in variables like `Heart_Rate` or `Body_Temp` can disproportionately affect model performance.
+- **Multicollinearity**: Features like `Weight` and `Height` may be correlated, which can affect the reliability of coefficient estimates in linear regression.
+
+---
+
+This concludes the detailed steps leading up to the implementation of linear regression. The model can now be evaluated to understand its performance, and further enhancements can be made by trying more advanced algorithms if necessary.
