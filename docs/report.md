@@ -50,7 +50,8 @@ A histogram or distribution plot helps visualize the distribution of the target 
 ### b. **Correlation Matrix**:
 - A heatmap of correlations between variables helps identify which features are most strongly related to the target variable (`Calories`). Features with high correlation, such as `Duration` and `Heart_Rate`, are expected to play a significant role in prediction.
 <img src="Correlation Matrix.png" />
-![Correlation](./correlation_matrix.png)
+![Correlation](correlation_matrix.png)
+
 
 ### c. **Box Plot of Calories Burnt by Gender**:
 - This box plot compares the distribution of calories burnt for males and females. It helps determine if there’s a significant difference in calorie expenditure between genders.
