@@ -41,6 +41,8 @@ The objective of this project is to predict the number of calories burnt by indi
 A histogram or distribution plot helps visualize the distribution of the target variable, `Calories`. This plot can show whether the calories burnt are normally distributed, skewed, or have outliers.
 
 <img src="Distribution of Calories Burned.png" />
+![Calories Burnt Distribution](Distribution of Calories Burned.png)
+
 
 - You can create this plot using:
   ```python
