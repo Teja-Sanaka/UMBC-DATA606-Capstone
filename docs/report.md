@@ -44,6 +44,8 @@ A histogram or distribution plot helps visualize the distribution of the target 
 ![Distribution of Calories Burned](./Distribution of Calories Burned.png)
 ![Distribution of Calories Burned](Distribution of Calories Burned.png)
 
+![Calories Burnt Distribution](./calories_distribution.png)
+
 
 - You can create this plot using:
   ```python
