@@ -42,6 +42,7 @@ A histogram or distribution plot helps visualize the distribution of the target 
 
 <img src="Distribution of Calories Burned.png" />
 ![Distribution of Calories Burned](./Distribution of Calories Burned.png)
+![Distribution of Calories Burned](Distribution of Calories Burned.png)
 
 
 - You can create this plot using:
