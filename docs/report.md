@@ -1,3 +1,4 @@
+
 # Calories Burnt Prediction - Machine Learning Project
 
 ## 1. Problem Overview
@@ -36,10 +37,9 @@ A histogram to visualize the distribution of the target variable, `Calories`. Th
 
 ![Calories Burnt Distribution](./calories_distribution.png)
 
-### b. **Scatter Plot of Duration vs. Calories**:
-A scatter plot visualizing the relationship between the duration of the exercise and the number of calories burnt. A positive correlation is expected.
-
-![Duration vs. Calories Scatter Plot](./duration_vs_calories.png)
+### b. **Pairplot**:
+This helps us to visualize the distribution of every attribute with the other
+![Pairplot](./pairplot.png)
 
 ### c. **Correlation Matrix**:
 A heatmap of correlations between variables helps identify which features are most strongly related to the target variable (`Calories`). Features with high correlation, such as `Duration` and `Heart_Rate`, are expected to play a significant role in prediction.
@@ -51,10 +51,6 @@ A boxplot for all numerical features (`Age`, `Height`, `Weight`, `Duration`, `He
 
 ![Boxplot of Numerical Features](./boxplot_numerical_features.png)
 
-### e. **Calories Burnt by Gender**:
-A boxplot that shows the distribution of calories burnt between males and females. This will highlight any differences between gender and calories burnt.
-
-![Calories by Gender Boxplot](./calories_gender_boxplot.png)
 
 ---
 
@@ -74,3 +70,60 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # Display the shape of the training and testing sets
 print(f"Training set shape: {X_train.shape}")
 print(f"Testing set shape: {X_test.shape}")
+```
+
+---
+
+
+## 5. Model: Linear Regression
+
+### Model Fitting
+A linear regression model was trained on the dataset. The R² score was used as a measure of how well the model's predictions match the actual data.
+
+- **Model**: Linear Regression
+- **Evaluation Metric**: R-squared (R²)
+
+###  Performance Metrics
+
+#### Training Data
+- **Training R²**: 0.864  
+This value indicates that the model explains 86.4% of the variance in the training data.
+
+#### Testing Data
+- **Testing R²**: 0.859  
+This value shows that the model generalizes well to unseen data, explaining 85.9% of the variance in the test set.
+
+### Observations
+- The close similarity between the training and test R² scores (0.864 and 0.859, respectively) suggests that the model is not overfitting. It performs consistently on both the training and test datasets, indicating a good balance between bias and variance.
+
+---
+
+## Conclusion
+The linear regression model has demonstrated strong performance on the dataset, achieving an R² score of 0.864 on the training data and 0.859 on the test data. These metrics suggest that the model is reliable and has good predictive power with minimal overfitting.
+
+### Recommendations
+To further improve the model:
+- I would like to consider testing other models which can help handle potential multicollinearity in the dataset.
+- I would like to explore feature engineering to enhance the model's performance by adding meaningful transformations or interactions between variables.
+
+---
+
+## 5. Future Work
+In future iterations, I would like to explore advanced models, or more extensive feature selection to optimize performance and reduce residual prediction error and also make use of streamlit library for creating an interface for the project
+
+---
+
+## 6. Code Snippet
+Below is the key code snippet used to calculate the R² score for both training and test sets:
+
+```python
+from sklearn.metrics import r2_score
+
+# R-squared score for the test set
+linear_acc_test = r2_score(linear_result_test, Y_test)
+print("Testing R²:", linear_acc_test)
+
+# R-squared score for the training set
+linear_acc_train = r2_score(linear_result_train, Y_train)
+print("Training R²:", linear_acc_train)
+```
