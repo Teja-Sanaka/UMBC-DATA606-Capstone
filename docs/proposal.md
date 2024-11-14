@@ -67,6 +67,8 @@ The table below outlines the columns, data types, definitions, and potential val
 | **Height (cm)**        | Numerical      | The height of the participant in centimeters        | Numeric values                      |
 | **Gender**            | Categorical    | Gender of the participant                           | Male, Female                        |
 | **Calories Burned**   | Numerical      | The number of calories burned after the exercise   | Numeric values (target variable)    |
+| **Body Temperature**   | Numerical      | The body temperature after the exercise   | Numeric values     |
+| **Heart rate**   | Numerical      | The heart rate after the exercise   | Numeric values     |
 
 **Target/Label**:
 - **Target Variable**: The target variable in the machine learning model will be **"Calories Burned"**. This is the output the model will predict based on the input features.
