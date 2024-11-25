@@ -94,7 +94,7 @@ st.write(f"**BMI:** {bmi:.2f}")
 # Load dataset
 #calories = pd.read_csv(calories_path)
 #exercise = pd.read_csv(exercise_path)
-calories_url = "https://raw.githubusercontent.com/username/repository/main/folder/calories.csv"
+calories_url = "https://raw.githubusercontent.com/Teja-Sanaka/UMBC-DATA606-Capstone/refs/heads/main/app/calories.csv"
 exercise_url = "https://raw.githubusercontent.com/username/repository/main/folder/exercise.csv"
 
 # Load datasets from GitHub
