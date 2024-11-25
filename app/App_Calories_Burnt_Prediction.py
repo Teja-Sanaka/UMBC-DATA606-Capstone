@@ -92,8 +92,14 @@ st.write(f"**BMI:** {bmi:.2f}")
 #     st.stop()
 
 # Load dataset
-calories = pd.read_csv(calories_path)
-exercise = pd.read_csv(exercise_path)
+#calories = pd.read_csv(calories_path)
+#exercise = pd.read_csv(exercise_path)
+calories_url = "https://raw.githubusercontent.com/username/repository/main/folder/calories.csv"
+exercise_url = "https://raw.githubusercontent.com/username/repository/main/folder/exercise.csv"
+
+# Load datasets from GitHub
+calories = pd.read_csv(calories_url)
+exercise = pd.read_csv(exercise_url)
 
 # Merge datasets on 'User_ID'
 exercise_df = exercise.merge(calories, on="User_ID")
