@@ -93,11 +93,11 @@ exercise_path = "exercise.csv"
 #     st.error(f"The file {exercise_path} does not exist. Please provide the correct path.")
 #     st.stop()
 
-# Load dataset
-calories = "calories.csv"
-exercise = "exercise.csv"
+# # Load dataset
+# calories = "calories.csv"
+# exercise = "exercise.csv"
 
-exercise_df = exercise.merge(calories, on="User_ID")
+exercise_df = exercise_path.merge(calories_path, on="User_ID")
 exercise_df.drop(columns="User_ID", inplace=True)
 
 # Train-test split
