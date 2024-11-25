@@ -78,18 +78,18 @@ height_m = height / 100  # convert cm to meters
 bmi = weight / (height_m ** 2)
 st.write(f"**BMI:** {bmi:.2f}")
 
-# Define relative paths for CSV files
-calories_path = "calories.csv"
-exercise_path = "exercise.csv"
+# # Define relative paths for CSV files
+# calories_path = "calories.csv"
+# exercise_path = "exercise.csv"
 
-# Check if files exist (ensure your CSV files are uploaded correctly)
-if not os.path.exists(calories_path):
-    st.error(f"The file {calories_path} does not exist. Please provide the correct path.")
-    st.stop()
+# # Check if files exist (ensure your CSV files are uploaded correctly)
+# if not os.path.exists(calories_path):
+#     st.error(f"The file {calories_path} does not exist. Please provide the correct path.")
+#     st.stop()
 
-if not os.path.exists(exercise_path):
-    st.error(f"The file {exercise_path} does not exist. Please provide the correct path.")
-    st.stop()
+# if not os.path.exists(exercise_path):
+#     st.error(f"The file {exercise_path} does not exist. Please provide the correct path.")
+#     st.stop()
 
 # Load dataset
 calories = pd.read_csv(calories_path)
