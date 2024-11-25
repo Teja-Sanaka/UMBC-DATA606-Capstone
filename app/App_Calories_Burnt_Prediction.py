@@ -1,8 +1,4 @@
-
 # coding: utf-8
-
-# In[5]:
-
 
 import streamlit as st
 import numpy as np
@@ -63,85 +59,46 @@ def user_input_features():
 
 df, age, weight, height, duration, heart_rate, body_temp = user_input_features()
 
-# Display user parameters with progress bar
-st.write("---")
-st.header("Your Parameters:")
-latest_iteration = st.empty()
-progress_bar = st.progress(0)
-for i in range(100):
-    progress_bar.progress(i + 1)
-    time.sleep(0.01)
-st.write(df)
+# File upload
+st.sidebar.write("### Upload Datasets")
+calories_file = st.sidebar.file_uploader("Upload Calories CSV", type=["csv"])
+exercise_file = st.sidebar.file_uploader("Upload Exercise CSV", type=["csv"])
 
-# Calculate BMI
-height_m = height / 100  # convert cm to meters
-bmi = weight / (height_m ** 2)
-st.write(f"**BMI:** {bmi:.2f}")
+if not calories_file or not exercise_file:
+    st.error("Please upload both datasets to proceed!")
+else:
+    calories = pd.read_csv(calories_file)
+    exercise = pd.read_csv(exercise_file)
 
-# Load dataset
-calories = pd.read_csv("C:/Users/teja/Desktop/Data 606/calories.csv")
-exercise = pd.read_csv("C:/Users/teja/Desktop/Data 606/exercise.csv")
+    exercise_df = exercise.merge(calories, on="User_ID")
+    exercise_df.drop(columns="User_ID", inplace=True)
 
-exercise_df = exercise.merge(calories, on="User_ID")
-exercise_df.drop(columns="User_ID", inplace=True)
+    # Train-test split
+    exercise_train_data, exercise_test_data = train_test_split(exercise_df, test_size=0.2, random_state=1)
+    exercise_train_data = exercise_train_data[["Gender", "Age", "Weight", "Height", "Duration", "Heart_Rate", "Body_Temp", "Calories"]]
+    exercise_test_data = exercise_test_data[["Gender", "Age", "Weight", "Height", "Duration", "Heart_Rate", "Body_Temp", "Calories"]]
 
-# Train-test split
-exercise_train_data, exercise_test_data = train_test_split(exercise_df, test_size=0.2, random_state=1)
-exercise_train_data = exercise_train_data[["Gender", "Age", "Weight", "Height", "Duration", "Heart_Rate", "Body_Temp", "Calories"]]
-exercise_test_data = exercise_test_data[["Gender", "Age", "Weight", "Height", "Duration", "Heart_Rate", "Body_Temp", "Calories"]]
+    # One-hot encoding for Gender
+    exercise_train_data = pd.get_dummies(exercise_train_data, drop_first=True)
+    exercise_test_data = pd.get_dummies(exercise_test_data, drop_first=True)
 
-# One-hot encoding for Gender
-exercise_train_data = pd.get_dummies(exercise_train_data, drop_first=True)
-exercise_test_data = pd.get_dummies(exercise_test_data, drop_first=True)
+    X_train = exercise_train_data.drop("Calories", axis=1)
+    y_train = exercise_train_data["Calories"]
+    X_test = exercise_test_data.drop("Calories", axis=1)
+    y_test = exercise_test_data["Calories"]
 
-X_train = exercise_train_data.drop("Calories", axis=1)
-y_train = exercise_train_data["Calories"]
-X_test = exercise_test_data.drop("Calories", axis=1)
-y_test = exercise_test_data["Calories"]
+    # XGBoost model
+    xgb_model = XGBRegressor(n_estimators=1000, max_depth=6, learning_rate=0.1)
+    xgb_model.fit(X_train, y_train)
 
-# XGBoost model
-xgb_model = XGBRegressor(n_estimators=1000, max_depth=6, learning_rate=0.1)
-xgb_model.fit(X_train, y_train)
+    # Prediction on user input with progress bar
+    st.write("---")
+    st.header("Prediction:")
+    latest_iteration = st.empty()
+    progress_bar = st.progress(0)
+    for i in range(100):
+        progress_bar.progress(i + 1)
+        time.sleep(0.01)
 
-# Prediction on user input with progress bar
-st.write("---")
-st.header("Prediction:")
-latest_iteration = st.empty()
-progress_bar = st.progress(0)
-for i in range(100):
-    progress_bar.progress(i + 1)
-    time.sleep(0.01)
-
-prediction = xgb_model.predict(df)
-st.write(round(prediction[0], 2), " **kilocalories**")
-
-# Display similar results with progress bar
-st.write("---")
-st.header("Similar Results:")
-latest_iteration = st.empty()
-progress_bar = st.progress(0)
-for i in range(100):
-    progress_bar.progress(i + 1)
-    time.sleep(0.01)
-
-prediction_range = [prediction[0] - 10, prediction[0] + 10]
-similar_results = exercise_df[(exercise_df["Calories"] >= prediction_range[0]) & (exercise_df["Calories"] <= prediction_range[-1])]
-st.write(similar_results.sample(5))
-
-# General information
-st.write("---")
-st.header("General Information:")
-
-boolean_age = (exercise_df["Age"] < age).tolist()
-boolean_weight = (exercise_df["Weight"] < weight).tolist()
-boolean_height = (exercise_df["Height"] < height).tolist()
-boolean_duration = (exercise_df["Duration"] < duration).tolist()
-boolean_body_temp = (exercise_df["Body_Temp"] < body_temp).tolist()
-boolean_heart_rate = (exercise_df["Heart_Rate"] < heart_rate).tolist()
-
-st.write("You are older than ", round(sum(boolean_age) / len(boolean_age) * 100, 2), "% of other people.")
-st.write("Your weight is higher than ", round(sum(boolean_weight) / len(boolean_weight) * 100, 2), "% of other people.")
-st.write("Your exercise duration is longer than ", round(sum(boolean_duration) / len(boolean_duration) * 100, 2), "% of other people.")
-st.write("Your heart rate is higher than ", round(sum(boolean_heart_rate) / len(boolean_heart_rate) * 100, 2), "% of other people during exercise.")
-st.write("Your body temperature is higher than ", round(sum(boolean_body_temp) / len(boolean_body_temp) * 100, 2), "% of other people during exercise.")
-
+    prediction = xgb_model.predict(df)
+    st.write(round(prediction[0], 2), " **kilocalories**")
