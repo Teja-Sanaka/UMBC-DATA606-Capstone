@@ -105,7 +105,7 @@ y_test = exercise_test_data["Calories"]
 # Train the XGBoost model
 try:
     from xgboost import XGBRegressor
-    xgb_model = XGBRegressor(n_estimators=1000, max_depth=6, learning_rate=0.1)
+    xgb_model = XGBRegressor(n_estimators=100, max_depth=4, learning_rate=0.1)
     xgb_model.fit(X_train, y_train)
 except Exception as e:
     st.error(f"An error occurred while training the model: {e}")
