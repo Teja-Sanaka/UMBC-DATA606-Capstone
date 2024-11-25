@@ -3,9 +3,8 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from xgboost import XGBRegressor
-import time
-import os
 import warnings
+import time
 
 warnings.filterwarnings("ignore")
 
@@ -41,15 +40,21 @@ def user_input_features():
     return pd.DataFrame(data, index=[0])
 
 
-# Load Datasets
+# File Upload Section
+st.sidebar.subheader("Upload Your Data Files:")
+
+uploaded_calories = st.sidebar.file_uploader("Upload `calories.csv`", type=["csv"])
+uploaded_exercise = st.sidebar.file_uploader("Upload `exercise.csv`", type=["csv"])
+
+
 @st.cache_data
-def load_data():
+def load_data(calories_file, exercise_file):
     try:
-        calories = pd.read_csv("data/calories.csv")
-        exercise = pd.read_csv("data/exercise.csv")
+        calories = pd.read_csv(calories_file)
+        exercise = pd.read_csv(exercise_file)
         return exercise.merge(calories, on="User_ID")
-    except FileNotFoundError:
-        st.error("Dataset files not found. Please ensure 'data/calories.csv' and 'data/exercise.csv' are in the correct directory.")
+    except Exception as e:
+        st.error(f"Error loading data: {e}")
         return None
 
 
@@ -74,34 +79,40 @@ def train_model(data):
 
 
 # Main Application Logic
-data = load_data()
-if data is not None:
-    # Preprocessing
-    processed_data = preprocess_data(data)
+if uploaded_calories and uploaded_exercise:
+    data = load_data(uploaded_calories, uploaded_exercise)
 
-    # Train the model
-    xgb_model, train_data = train_model(processed_data)
+    if data is not None:
+        # Preprocess the data
+        processed_data = preprocess_data(data)
 
-    # User Input
-    user_data = user_input_features()
+        # Train the model
+        xgb_model, train_data = train_model(processed_data)
 
-    # Prediction
-    prediction = xgb_model.predict(user_data)[0]
-    st.subheader("Predicted Calories Burnt:")
-    st.write(f"**{prediction:.2f} kilocalories**")
+        # User Input
+        user_data = user_input_features()
 
-    # Display Similar Results
-    prediction_range = [prediction - 10, prediction + 10]
-    similar_results = processed_data[
-        (processed_data["Calories"] >= prediction_range[0]) &
-        (processed_data["Calories"] <= prediction_range[1])
-    ]
-    st.subheader("Similar Records from Dataset:")
-    st.write(similar_results.sample(min(len(similar_results), 5)))
+        # Prediction
+        prediction = xgb_model.predict(user_data)[0]
+        st.subheader("Predicted Calories Burnt:")
+        st.write(f"**{prediction:.2f} kilocalories**")
 
-    # Additional Insights
-    st.subheader("Additional Insights:")
-    bmi = user_data["Weight"].iloc[0] / ((user_data["Height"].iloc[0] / 100) ** 2)
-    st.write(f"**Your BMI:** {bmi:.2f}")
+        # Display Similar Results
+        prediction_range = [prediction - 10, prediction + 10]
+        similar_results = processed_data[
+            (processed_data["Calories"] >= prediction_range[0]) &
+            (processed_data["Calories"] <= prediction_range[1])
+        ]
+        st.subheader("Similar Records from Dataset:")
+        st.write(similar_results.sample(min(len(similar_results), 5)))
+
+        # Additional Insights
+        st.subheader("Additional Insights:")
+        bmi = user_data["Weight"].iloc[0] / ((user_data["Height"].iloc[0] / 100) ** 2)
+        st.write(f"**Your BMI:** {bmi:.2f}")
+    else:
+        st.stop()
 else:
+    st.sidebar.warning("Please upload both `calories.csv` and `exercise.csv` to proceed.")
     st.stop()
+
