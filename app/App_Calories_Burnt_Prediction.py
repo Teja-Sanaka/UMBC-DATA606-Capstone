@@ -81,8 +81,8 @@ bmi = weight / (height_m ** 2)
 st.write(f"**BMI:** {bmi:.2f}")
 
 # Define relative paths for CSV files
-calories_path = "./calories.csv"
-exercise_path = "./exercise.csv"
+calories_path = "calories.csv"
+exercise_path = "exercise.csv"
 
 # Check if files exist
 if not os.path.exists(calories_path):
