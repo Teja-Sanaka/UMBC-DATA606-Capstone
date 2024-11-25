@@ -1,5 +1,3 @@
-# coding: utf-8
-
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -84,20 +82,21 @@ st.write(f"**BMI:** {bmi:.2f}")
 calories_path = "calories.csv"
 exercise_path = "exercise.csv"
 
-# # Check if files exist
-# if not os.path.exists(calories_path):
-#     st.error(f"The file {calories_path} does not exist. Please provide the correct path.")
-#     st.stop()
+# Check if files exist (ensure your CSV files are uploaded correctly)
+if not os.path.exists(calories_path):
+    st.error(f"The file {calories_path} does not exist. Please provide the correct path.")
+    st.stop()
 
-# if not os.path.exists(exercise_path):
-#     st.error(f"The file {exercise_path} does not exist. Please provide the correct path.")
-#     st.stop()
+if not os.path.exists(exercise_path):
+    st.error(f"The file {exercise_path} does not exist. Please provide the correct path.")
+    st.stop()
 
-# # Load dataset
-# calories = "calories.csv"
-# exercise = "exercise.csv"
+# Load dataset
+calories = pd.read_csv(calories_path)
+exercise = pd.read_csv(exercise_path)
 
-exercise_df = exercise_path.merge(calories_path, on="User_ID")
+# Merge datasets on 'User_ID'
+exercise_df = exercise.merge(calories, on="User_ID")
 exercise_df.drop(columns="User_ID", inplace=True)
 
 # Train-test split
@@ -116,6 +115,7 @@ y_test = exercise_test_data["Calories"]
 
 # XGBoost model
 try:
+    from xgboost import XGBRegressor
     xgb_model = XGBRegressor(n_estimators=1000, max_depth=6, learning_rate=0.1)
     xgb_model.fit(X_train, y_train)
 except Exception as e:
