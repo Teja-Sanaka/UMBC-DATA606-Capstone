@@ -1,9 +1,3 @@
-
-# coding: utf-8
-
-# In[5]:
-
-
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -14,12 +8,14 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
+# App Title and Description
 st.write("## Calories Burnt Prediction")
 st.write("""
 Here we will be predicting calories burned based on some personal parameters 
 such as Age, Gender, Weight, Height, Duration, Heart Rate, and Body Temperature.
 """)
 
+# Custom Background Style for the App
 st.markdown(
     """
     <style>
@@ -35,6 +31,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Sidebar for User Input Parameters
 st.sidebar.header("User Input Parameters:")
 
 def user_input_features():
@@ -61,6 +58,7 @@ def user_input_features():
     features = pd.DataFrame(data_model, index=[0])
     return features, age, weight, height, duration, heart_rate, body_temp
 
+# Get user input
 df, age, weight, height, duration, heart_rate, body_temp = user_input_features()
 
 # Display user parameters with progress bar
@@ -78,10 +76,11 @@ height_m = height / 100  # convert cm to meters
 bmi = weight / (height_m ** 2)
 st.write(f"**BMI:** {bmi:.2f}")
 
-# Load dataset
-calories = pd.read_csv("C:/Users/teja/Desktop/Data 606/calories.csv")
-exercise = pd.read_csv("C:/Users/teja/Desktop/Data 606/exercise.csv")
+# Load dataset (adjust the file paths accordingly)
+calories = pd.read_csv("data/calories.csv")
+exercise = pd.read_csv("data/exercise.csv")
 
+# Merge the datasets and prepare training data
 exercise_df = exercise.merge(calories, on="User_ID")
 exercise_df.drop(columns="User_ID", inplace=True)
 
@@ -128,7 +127,7 @@ prediction_range = [prediction[0] - 10, prediction[0] + 10]
 similar_results = exercise_df[(exercise_df["Calories"] >= prediction_range[0]) & (exercise_df["Calories"] <= prediction_range[-1])]
 st.write(similar_results.sample(5))
 
-# General information
+# General information about the user
 st.write("---")
 st.header("General Information:")
 
@@ -144,4 +143,3 @@ st.write("Your weight is higher than ", round(sum(boolean_weight) / len(boolean_
 st.write("Your exercise duration is longer than ", round(sum(boolean_duration) / len(boolean_duration) * 100, 2), "% of other people.")
 st.write("Your heart rate is higher than ", round(sum(boolean_heart_rate) / len(boolean_heart_rate) * 100, 2), "% of other people during exercise.")
 st.write("Your body temperature is higher than ", round(sum(boolean_body_temp) / len(boolean_body_temp) * 100, 2), "% of other people during exercise.")
-
