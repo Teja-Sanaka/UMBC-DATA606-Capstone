@@ -1,38 +1,23 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from xgboost import XGBRegressor
 import time
+import os
 import warnings
 
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 
 # App Title and Description
-st.write("## Calories Burnt Prediction")
-st.write("""
-Here we will be predicting calories burned based on some personal parameters 
-such as Age, Gender, Weight, Height, Duration, Heart Rate, and Body Temperature.
+st.title("Calories Burnt Prediction App")
+st.markdown("""
+This app predicts the number of calories burned based on personal and exercise parameters.
 """)
-
-# Custom Background Style for the App
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-image: url("https://img.freepik.com/premium-photo/mat-with-hand-weights-sport-concept-3d-illustration-copy-space-fitness_522591-609.jpg?semt=ais_hybrid"); 
-        background-size: cover !important;
-        background-repeat: no-repeat !important;
-        background-attachment: fixed;
-        background-position: center;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 # Sidebar for User Input Parameters
 st.sidebar.header("User Input Parameters:")
+
 
 def user_input_features():
     age = st.sidebar.slider("Age:", 10, 100, 30)
@@ -40,106 +25,83 @@ def user_input_features():
     height = st.sidebar.slider("Height (cm):", 40, 200, 150)
     duration = st.sidebar.slider("Duration (min):", 0, 120, 15)
     heart_rate = st.sidebar.slider("Heart Rate:", 50, 150, 80)
-    body_temp = st.sidebar.slider("Body Temperature (C):", 35, 50, 38)
-    gender_button = st.sidebar.radio("Gender:", ("Male(0)", "Female(1)"))
+    body_temp = st.sidebar.slider("Body Temperature (°C):", 35, 50, 38)
+    gender = st.sidebar.radio("Gender:", ["Male", "Female"])
+    gender_binary = 0 if gender == "Male" else 1
 
-    gender = 0 if gender_button == "Male(0)" else 1
-
-    data_model = {
-        "age": age,
-        "weight": weight,
-        "height": height,
-        "duration": duration,
-        "heart_rate": heart_rate,
-        "body_temp": body_temp,
-        "gender": gender
+    data = {
+        "Age": age,
+        "Weight": weight,
+        "Height": height,
+        "Duration": duration,
+        "Heart_Rate": heart_rate,
+        "Body_Temp": body_temp,
+        "Gender": gender_binary,
     }
+    return pd.DataFrame(data, index=[0])
 
-    features = pd.DataFrame(data_model, index=[0])
-    return features, age, weight, height, duration, heart_rate, body_temp
 
-# Get user input
-df, age, weight, height, duration, heart_rate, body_temp = user_input_features()
+# Load Datasets
+@st.cache_data
+def load_data():
+    try:
+        calories = pd.read_csv("data/calories.csv")
+        exercise = pd.read_csv("data/exercise.csv")
+        return exercise.merge(calories, on="User_ID")
+    except FileNotFoundError:
+        st.error("Dataset files not found. Please ensure 'data/calories.csv' and 'data/exercise.csv' are in the correct directory.")
+        return None
 
-# Display user parameters with progress bar
-st.write("---")
-st.header("Your Parameters:")
-latest_iteration = st.empty()
-progress_bar = st.progress(0)
-for i in range(100):
-    progress_bar.progress(i + 1)
-    time.sleep(0.01)
-st.write(df)
 
-# Calculate BMI
-height_m = height / 100  # convert cm to meters
-bmi = weight / (height_m ** 2)
-st.write(f"**BMI:** {bmi:.2f}")
+# Preprocess Data
+@st.cache_data
+def preprocess_data(data):
+    data = data.drop(columns=["User_ID"], errors="ignore")
+    data = pd.get_dummies(data, columns=["Gender"], drop_first=True)
+    return data
 
-# Load dataset (adjust the file paths accordingly)
-calories = pd.read_csv("data/calories.csv")
-exercise = pd.read_csv("data/exercise.csv")
 
-# Merge the datasets and prepare training data
-exercise_df = exercise.merge(calories, on="User_ID")
-exercise_df.drop(columns="User_ID", inplace=True)
+# Model Training
+@st.cache_resource
+def train_model(data):
+    train_data, test_data = train_test_split(data, test_size=0.2, random_state=1)
+    X_train = train_data.drop("Calories", axis=1)
+    y_train = train_data["Calories"]
 
-# Train-test split
-exercise_train_data, exercise_test_data = train_test_split(exercise_df, test_size=0.2, random_state=1)
-exercise_train_data = exercise_train_data[["Gender", "Age", "Weight", "Height", "Duration", "Heart_Rate", "Body_Temp", "Calories"]]
-exercise_test_data = exercise_test_data[["Gender", "Age", "Weight", "Height", "Duration", "Heart_Rate", "Body_Temp", "Calories"]]
+    model = XGBRegressor(n_estimators=1000, max_depth=6, learning_rate=0.1)
+    model.fit(X_train, y_train)
+    return model, train_data
 
-# One-hot encoding for Gender
-exercise_train_data = pd.get_dummies(exercise_train_data, drop_first=True)
-exercise_test_data = pd.get_dummies(exercise_test_data, drop_first=True)
 
-X_train = exercise_train_data.drop("Calories", axis=1)
-y_train = exercise_train_data["Calories"]
-X_test = exercise_test_data.drop("Calories", axis=1)
-y_test = exercise_test_data["Calories"]
+# Main Application Logic
+data = load_data()
+if data is not None:
+    # Preprocessing
+    processed_data = preprocess_data(data)
 
-# XGBoost model
-xgb_model = XGBRegressor(n_estimators=1000, max_depth=6, learning_rate=0.1)
-xgb_model.fit(X_train, y_train)
+    # Train the model
+    xgb_model, train_data = train_model(processed_data)
 
-# Prediction on user input with progress bar
-st.write("---")
-st.header("Prediction:")
-latest_iteration = st.empty()
-progress_bar = st.progress(0)
-for i in range(100):
-    progress_bar.progress(i + 1)
-    time.sleep(0.01)
+    # User Input
+    user_data = user_input_features()
 
-prediction = xgb_model.predict(df)
-st.write(round(prediction[0], 2), " **kilocalories**")
+    # Prediction
+    prediction = xgb_model.predict(user_data)[0]
+    st.subheader("Predicted Calories Burnt:")
+    st.write(f"**{prediction:.2f} kilocalories**")
 
-# Display similar results with progress bar
-st.write("---")
-st.header("Similar Results:")
-latest_iteration = st.empty()
-progress_bar = st.progress(0)
-for i in range(100):
-    progress_bar.progress(i + 1)
-    time.sleep(0.01)
+    # Display Similar Results
+    prediction_range = [prediction - 10, prediction + 10]
+    similar_results = processed_data[
+        (processed_data["Calories"] >= prediction_range[0]) &
+        (processed_data["Calories"] <= prediction_range[1])
+    ]
+    st.subheader("Similar Records from Dataset:")
+    st.write(similar_results.sample(min(len(similar_results), 5)))
 
-prediction_range = [prediction[0] - 10, prediction[0] + 10]
-similar_results = exercise_df[(exercise_df["Calories"] >= prediction_range[0]) & (exercise_df["Calories"] <= prediction_range[-1])]
-st.write(similar_results.sample(5))
-
-# General information about the user
-st.write("---")
-st.header("General Information:")
-
-boolean_age = (exercise_df["Age"] < age).tolist()
-boolean_weight = (exercise_df["Weight"] < weight).tolist()
-boolean_height = (exercise_df["Height"] < height).tolist()
-boolean_duration = (exercise_df["Duration"] < duration).tolist()
-boolean_body_temp = (exercise_df["Body_Temp"] < body_temp).tolist()
-boolean_heart_rate = (exercise_df["Heart_Rate"] < heart_rate).tolist()
-
-st.write("You are older than ", round(sum(boolean_age) / len(boolean_age) * 100, 2), "% of other people.")
-st.write("Your weight is higher than ", round(sum(boolean_weight) / len(boolean_weight) * 100, 2), "% of other people.")
-st.write("Your exercise duration is longer than ", round(sum(boolean_duration) / len(boolean_duration) * 100, 2), "% of other people.")
-st.write("Your heart rate is higher than ", round(sum(boolean_heart_rate) / len(boolean_heart_rate) * 100, 2), "% of other people during exercise.")
-st.write("Your body temperature is higher than ", round(sum(boolean_body_temp) / len(boolean_body_temp) * 100, 2), "% of other people during exercise.")
+    # Additional Insights
+    st.subheader("Additional Insights:")
+    bmi = user_data["Weight"].iloc[0] / ((user_data["Height"].iloc[0] / 100) ** 2)
+    st.write(f"**Your BMI:** {bmi:.2f}")
+else:
+    st.stop()
