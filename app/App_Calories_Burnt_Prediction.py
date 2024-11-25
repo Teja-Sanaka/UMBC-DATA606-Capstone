@@ -94,8 +94,8 @@ exercise_path = "exercise.csv"
 #     st.stop()
 
 # Load dataset
-calories = pd.read_csv("./calories.csv")
-exercise = pd.read_csv("./exercise.csv")
+calories = "calories.csv"
+exercise = "exercise.csv"
 
 exercise_df = exercise.merge(calories, on="User_ID")
 exercise_df.drop(columns="User_ID", inplace=True)
