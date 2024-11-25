@@ -9,10 +9,10 @@ import time
 import warnings
 
 # Error handling for missing xgboost
-try:
-    from xgboost import XGBRegressor
-except ModuleNotFoundError:
-    st.error("The 'xgboost' library is not installed. Please install it using 'pip install xgboost'.")
+# try:
+#     from xgboost import XGBRegressor
+# except ModuleNotFoundError:
+#     st.error("The 'xgboost' library is not installed. Please install it using 'pip install xgboost'.")
 
 warnings.filterwarnings('ignore')
 
@@ -84,18 +84,18 @@ st.write(f"**BMI:** {bmi:.2f}")
 calories_path = "calories.csv"
 exercise_path = "exercise.csv"
 
-# Check if files exist
-if not os.path.exists(calories_path):
-    st.error(f"The file {calories_path} does not exist. Please provide the correct path.")
-    st.stop()
+# # Check if files exist
+# if not os.path.exists(calories_path):
+#     st.error(f"The file {calories_path} does not exist. Please provide the correct path.")
+#     st.stop()
 
-if not os.path.exists(exercise_path):
-    st.error(f"The file {exercise_path} does not exist. Please provide the correct path.")
-    st.stop()
+# if not os.path.exists(exercise_path):
+#     st.error(f"The file {exercise_path} does not exist. Please provide the correct path.")
+#     st.stop()
 
 # Load dataset
-calories = pd.read_csv(calories_path)
-exercise = pd.read_csv(exercise_path)
+calories = pd.read_csv("./calories.csv")
+exercise = pd.read_csv("./exercise.csv")
 
 exercise_df = exercise.merge(calories, on="User_ID")
 exercise_df.drop(columns="User_ID", inplace=True)
