@@ -2,18 +2,13 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-import os
 import time
 import warnings
 
-# Error handling for missing xgboost
-# try:
-#     from xgboost import XGBRegressor
-# except ModuleNotFoundError:
-#     st.error("The 'xgboost' library is not installed. Please install it using 'pip install xgboost'.")
-
+# Suppress warnings
 warnings.filterwarnings('ignore')
 
+# Set up the app
 st.write("## Calories Burnt Prediction")
 st.write("""
 Here we will be predicting calories burned based on some personal parameters 
@@ -37,6 +32,7 @@ st.markdown(
 
 st.sidebar.header("User Input Parameters:")
 
+# Function to handle user input
 def user_input_features():
     age = st.sidebar.slider("Age:", 10, 100, 30)
     weight = st.sidebar.slider("Weight (kg):", 30, 200, 60)
@@ -48,20 +44,21 @@ def user_input_features():
 
     gender = 0 if gender_button == "Male(0)" else 1
 
+    # Return the features in the format the model expects
     data_model = {
-        "age": age,
-        "weight": weight,
-        "height": height,
-        "duration": duration,
-        "heart_rate": heart_rate,
-        "body_temp": body_temp,
-        "gender": gender
+        "Age": age,
+        "Weight": weight,
+        "Height": height,
+        "Duration": duration,
+        "Heart_Rate": heart_rate,
+        "Body_Temp": body_temp,
+        "Gender_male": 1 if gender == 0 else 0  # Encoding 'Male' as 1 and 'Female' as 0
     }
 
     features = pd.DataFrame(data_model, index=[0])
-    return features, age, weight, height, duration, heart_rate, body_temp
+    return features
 
-df, age, weight, height, duration, heart_rate, body_temp = user_input_features()
+df = user_input_features()
 
 # Display user parameters with progress bar
 st.write("---")
@@ -74,30 +71,15 @@ for i in range(100):
 st.write(df)
 
 # Calculate BMI
-height_m = height / 100  # convert cm to meters
-bmi = weight / (height_m ** 2)
+height_m = df['Height'][0] / 100  # convert cm to meters
+bmi = df['Weight'][0] / (height_m ** 2)
 st.write(f"**BMI:** {bmi:.2f}")
 
-# # Define relative paths for CSV files
-# calories_path = "calories.csv"
-# exercise_path = "exercise.csv"
-
-# # Check if files exist (ensure your CSV files are uploaded correctly)
-# if not os.path.exists(calories_path):
-#     st.error(f"The file {calories_path} does not exist. Please provide the correct path.")
-#     st.stop()
-
-# if not os.path.exists(exercise_path):
-#     st.error(f"The file {exercise_path} does not exist. Please provide the correct path.")
-#     st.stop()
-
-# Load dataset
-#calories = pd.read_csv(calories_path)
-#exercise = pd.read_csv(exercise_path)
+# Load datasets from GitHub
 calories_url = "https://raw.githubusercontent.com/Teja-Sanaka/UMBC-DATA606-Capstone/refs/heads/main/app/calories.csv"
 exercise_url = "https://raw.githubusercontent.com/Teja-Sanaka/UMBC-DATA606-Capstone/refs/heads/main/app/exercise.csv"
 
-# Load datasets from GitHub
+# Load the datasets
 calories = pd.read_csv(calories_url)
 exercise = pd.read_csv(exercise_url)
 
@@ -114,12 +96,13 @@ exercise_test_data = exercise_test_data[["Gender", "Age", "Weight", "Height", "D
 exercise_train_data = pd.get_dummies(exercise_train_data, drop_first=True)
 exercise_test_data = pd.get_dummies(exercise_test_data, drop_first=True)
 
+# Prepare features and labels
 X_train = exercise_train_data.drop("Calories", axis=1)
 y_train = exercise_train_data["Calories"]
 X_test = exercise_test_data.drop("Calories", axis=1)
 y_test = exercise_test_data["Calories"]
 
-# XGBoost model
+# Train the XGBoost model
 try:
     from xgboost import XGBRegressor
     xgb_model = XGBRegressor(n_estimators=1000, max_depth=6, learning_rate=0.1)
@@ -137,6 +120,7 @@ for i in range(100):
     progress_bar.progress(i + 1)
     time.sleep(0.01)
 
+# Prediction
 try:
     prediction = xgb_model.predict(df)
     st.write(round(prediction[0], 2), " **kilocalories**")
@@ -161,12 +145,12 @@ st.write(similar_results.sample(5))
 st.write("---")
 st.header("General Information:")
 
-boolean_age = (exercise_df["Age"] < age).tolist()
-boolean_weight = (exercise_df["Weight"] < weight).tolist()
-boolean_height = (exercise_df["Height"] < height).tolist()
-boolean_duration = (exercise_df["Duration"] < duration).tolist()
-boolean_body_temp = (exercise_df["Body_Temp"] < body_temp).tolist()
-boolean_heart_rate = (exercise_df["Heart_Rate"] < heart_rate).tolist()
+boolean_age = (exercise_df["Age"] < df["Age"][0]).tolist()
+boolean_weight = (exercise_df["Weight"] < df["Weight"][0]).tolist()
+boolean_height = (exercise_df["Height"] < df["Height"][0]).tolist()
+boolean_duration = (exercise_df["Duration"] < df["Duration"][0]).tolist()
+boolean_body_temp = (exercise_df["Body_Temp"] < df["Body_Temp"][0]).tolist()
+boolean_heart_rate = (exercise_df["Heart_Rate"] < df["Heart_Rate"][0]).tolist()
 
 st.write("You are older than ", round(sum(boolean_age) / len(boolean_age) * 100, 2), "% of other people.")
 st.write("Your weight is higher than ", round(sum(boolean_weight) / len(boolean_weight) * 100, 2), "% of other people.")
