@@ -21,19 +21,10 @@ This research can also be useful for fitness trainers, individuals, and companie
 **What questions are we trying to answer?**
 
 1. **What are the most important factors that affect calorie burning during exercise?**
-   - This question looks at which factors, like age, weight, or exercise type, have the biggest impact on calories burned.
 
-2. **Can machine learning predict how many calories someone burns during exercise?**
-   - This looks at whether machine learning models can accurately guess the number of calories burned.
-
+2. **- Can we accurately predict calories burnt using exercise and personal data?**
+    
 3. **Which machine learning model is best for predicting calorie burn?**
-   - This question compares different models to see which one works the best in terms of accuracy and speed.
-
-4. **Does customizing the prediction based on personal details like age and weight improve accuracy?**
-   - This looks at whether adding personal information helps make better predictions.
-
-
-
 
 ### 3. Data
 
