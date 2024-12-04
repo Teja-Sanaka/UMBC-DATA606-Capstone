@@ -6,7 +6,7 @@
 - *GitHub:* [https://github.com/Teja-Sanaka/UMBC-DATA606-Capstone](https://github.com/Teja-Sanaka/UMBC-DATA606-Capstone)
 - *LinkedIn profile:* [https://www.linkedin.com/in/teja-sanaka-6598771ba/](https://www.linkedin.com/in/teja-sanaka-6598771ba/)
 - *[YouTube Video]:*(https://youtu.be/yBLU3z5dSaA?si=5AUmnlWZJDM0vdY2)
-- *[PowerPoint Presentation]:*(.teja_ppt) 
+- *[PowerPoint Presentation]:*(./teja_ppt) 
 
 # 2.Background
 
@@ -160,7 +160,7 @@ print(f"Testing set shape: {X_test.shape}")
 
 **Performance Metrics:**  
 - XGBoost provided the best accuracy, handling feature interactions effectively.  
-
+  ![Comparision of the Models Used](./model_comparision.png)
 ---
 
 # 6. Application of the Trained Models
