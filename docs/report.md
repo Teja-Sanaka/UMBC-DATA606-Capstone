@@ -6,7 +6,7 @@
 - *GitHub:* [https://github.com/Teja-Sanaka/UMBC-DATA606-Capstone](https://github.com/Teja-Sanaka/UMBC-DATA606-Capstone)
 - *LinkedIn profile:* [https://www.linkedin.com/in/teja-sanaka-6598771ba/](https://www.linkedin.com/in/teja-sanaka-6598771ba/)
 - *[YouTube Video]:*(https://youtu.be/yBLU3z5dSaA?si=5AUmnlWZJDM0vdY2)
-- *[PowerPoint Presentation]:*(./teja_pptx) 
+- *[PowerPoint Presentation]:*(./teja_ppt.pptx) 
 
 # 2.Background
 
