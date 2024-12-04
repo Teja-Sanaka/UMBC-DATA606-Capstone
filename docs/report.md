@@ -101,7 +101,7 @@ These features will help the model learn the relationship between exercise activ
   
 ---
 
-## 4. Exploratory Data Analysis (EDA)
+# 4. Exploratory Data Analysis (EDA)
 
 ### a. **Distribution of Calories Burnt**:
 A histogram to visualize the distribution of the target variable, `Calories`. This plot shows whether the calories burnt are normally distributed or skewed.
@@ -119,7 +119,7 @@ A heatmap of correlations between variables helps identify which features are mo
 
 
 
-## 5. Model Training
+# 5. Model Training
 **Models Used:**  
 - Linear Regression  
 - Lasso Regression  
@@ -161,7 +161,7 @@ print(f"Testing set shape: {X_test.shape}")
 
 ---
 
-## 6. Application of the Trained Models
+# 6. Application of the Trained Models
 **Web App**: Built using Streamlit.  
 ![Streamlit Application](./streamlit_1.png)
 
@@ -177,7 +177,7 @@ print(f"Testing set shape: {X_test.shape}")
 
 ---
 
-## 7. Conclusion
+# 7. Conclusion
 **Achievements:**  
 - Developed a functional calorie prediction app using XGBoost and Streamlit.  
 - Delivered a user-friendly interface to make predictions accessible.  
@@ -193,7 +193,7 @@ print(f"Testing set shape: {X_test.shape}")
 
 ---
 
-## 8. References
+# 8. References
 - Kaggle Datasets: [Exercise and Calories](https://www.kaggle.com/datasets)  
 - Python Libraries Documentation: `scikit-learn`, `xgboost`, `streamlit`  
 - Academic Papers and Blogs on Feature Engineering and Predictive Modeling.  
